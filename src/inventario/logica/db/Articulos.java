@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import logica.db.DaoFactura;
+import inventario.logica.db.Conexion;
 
 /**
  *
@@ -57,7 +58,7 @@ public class Articulos extends Dao{
     public ArrayList<Object> getDatos(int id){
         ArrayList<Object> o = new ArrayList<>();
         try {
-           
+            System.out.println("esto es la conexio--> "+Conexion.existConexion());
             inventario.logica.db.Conexion.setStamento(inventario.logica.db.Conexion.getConnecion().createStatement());
             //String sentencia ="insert into contenido_tem (plato,cantidad,precio) values('"+i.getNombre()+"',"+i.getCantidad()+","+i.getPrecio()+");";
             String sentencia = "select id,nombre,precio,existencias,tipo,negocio from articulo where  existencias>0 and negocio = "+id+";";

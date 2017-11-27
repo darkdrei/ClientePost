@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import org.sqlite.SQLiteDataSource;
+import org.sqlite.SQLiteJDBCLoader;
 
 /**
  *
@@ -41,11 +43,15 @@ public class Conexion {
             //String ruta ="C:\\Users\\hp 4204LA\\Desktop\\origami\\origami.db";
             //String ruta ="C:\\Users\\Carotech\Desktop\\origam.db";
             String ruta ="C:\\Users\\eugenio\\Downloads\\origam.db";
+            ruta="/home/dark/proyectos/ClientePost/origam.db";
             //ruta ="C:\\origamis\\origam.db";
             //ruta ="C:\\Users\\Carotech\\Desktop\\origam.db";
             //String ruta ="/home/dark/Dropbox/Restaurante/origami.db";
             System.out.println("Entrando en la ruta de creacin de db");
             File base = new File(ruta); //la declaramos como un archivo
+                        boolean initialize = SQLiteJDBCLoader.initialize();
+            SQLiteDataSource dataSource = new SQLiteDataSource();
+
             if (base.exists()) {       //si la base existe
                 System.out.println("existe el archivo");
                 conex = DriverManager.getConnection("jdbc:sqlite:" + ruta); //conexion con la base

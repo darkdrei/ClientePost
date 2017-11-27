@@ -28,7 +28,7 @@ import logica.db.Usuario;
  */
 public class loguin extends javax.swing.JFrame {
 
-    mesero m = new mesero();
+    //mesero m = new mesero();
     cajero caje = new cajero();
     private int c = 0;
     Calendar calendar = new GregorianCalendar();

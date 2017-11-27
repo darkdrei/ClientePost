@@ -46,8 +46,8 @@ public class Postgres {
         try {
             Class.forName("org.postgresql.Driver"); //driver a utilizar
             conex = DriverManager.getConnection(
-                    "jdbc:postgresql://104.236.33.228:5432/inventario2", "postgres",
-                    "Exile*74522547");
+                    "jdbc:postgresql://ec2-18-221-126-24.us-east-2.compute.amazonaws.com:5432/inventario_deploy", "postgres",
+                    "123456");
         } catch (org.postgresql.util.PSQLException e) {
             BANDERA = false;
             JOptionPane.showMessageDialog(null, e + "  se exploto");//hubo un error

@@ -109,6 +109,7 @@ public class ReloadServer {
 
     public void sincronizarFacturas() {
         try {
+            inventario.logica.db.Conexion.openConexion();
             inventario.logica.db.Conexion.setStamento(inventario.logica.db.Conexion.getConnecion().createStatement());
             String sentencia = "select id,fecha from factura where enviada=1 and paga=1 and cargada=0;";
             ResultSet r = inventario.logica.db.Conexion.getStamento().executeQuery(sentencia);
@@ -116,10 +117,11 @@ public class ReloadServer {
             //{"a":{"factura":1,"fecha":"","cliente":"false","descripcion":[{"articulo":2,"cantidad":45}]}}
             String info_factura = "";
             String info_des = "";
+            int i = 0;
             while (r.next()) {
                 String descrip = "";
                 ArrayList<Object> datos = des.getDatos(new String[]{"" + r.getInt(1)});
-                int i = 0;
+                
                 for (i = 0; i < datos.size(); i++) {
                     inventario.logica.Descripcion tem_des = (inventario.logica.Descripcion) datos.get(i);
                     descrip += "{\"articulo\":" + tem_des.getArticulo_id() + ",\"cantidad\":" + tem_des.getCantidad() + "}";
@@ -128,16 +130,19 @@ public class ReloadServer {
                 info_factura += "\"a\":{\"factura\":1,\"fecha\":\"" + r.getString(2) + "\",\"cliente\":\"false\",\"descripcion\":[" + descrip + "]}";
                 info_factura += r.next() ? "," : "";
             }
-            System.out.println("//////////////////////////////////////////////////////////////////////////");
-            String envio = info_factura.substring(0, info_factura.length() - 1);
-            if (envio.length() > 0) {
-                try {
-                    Postgres.setStamento(Postgres.getConnecion().createStatement());
-                    sentencia = "select sincronizar_cliente('{"+envio+"}'::json)";
-                    System.out.println(sentencia);
-                    r = Postgres.getStamento().executeQuery(sentencia);
-                } catch (SQLException ex) {
-                    System.out.println("en el 1 factura"+ex);
+            if(i > 0){
+                System.out.println("//////////////////////////////////////////////////////////////////////////");
+                System.out.println(info_factura);
+                String envio = info_factura.substring(0, info_factura.length() - 1);
+                if (envio.length() > 0) {
+                    try {
+                        Postgres.setStamento(Postgres.getConnecion().createStatement());
+                        sentencia = "select sincronizar_cliente('{"+envio+"}'::json)";
+                        System.out.println(sentencia);
+                        r = Postgres.getStamento().executeQuery(sentencia);
+                    } catch (SQLException ex) {
+                        System.out.println("en el 1 factura"+ex);
+                    }
                 }
             }
         } catch (SQLException ex) {
